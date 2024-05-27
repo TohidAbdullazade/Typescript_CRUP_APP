@@ -1,4 +1,4 @@
-import { Typography, Button, Space } from "antd";
+import { Typography, Button, Space, message } from "antd";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { updateTodos } from "../services/LocalStorageFething";
@@ -31,20 +31,27 @@ const EditTodo = () => {
     e.preventDefault();
     let sameTask = taskList.find((tk) => tk.id === id);
     if (sameTask) {
-      sameTask.task = task;
-      sameTask.id = Math.floor(
-        Math.random() * Math.floor(Math.pow(new Date().getMilliseconds(), 5))
-      );
-      setTaskList([...taskList, sameTask]);
-      localStorage.setItem("todos", JSON.stringify([...taskList]));
+      if (currentTask === ""|| currentTask.startsWith(" ")) {
+        message.error("Can't be empty and whitespace", 1);
+        return;
+      } else {
+        sameTask.task = task;
+        sameTask.id = Math.floor(
+          Math.random() * Math.floor(Math.pow(new Date().getMilliseconds(), 5))
+        );
+
+        setTaskList([...taskList, sameTask]);
+        localStorage.setItem("todos", JSON.stringify([...taskList]));
+        toast.success(`Task:${task} updated successful`, {
+          position: "top-center",
+          autoClose: 1500,
+          pauseOnHover: false,
+          closeOnClick: true,
+          draggable: true,
+        });
+      }
     }
-    toast.success(`Task:${task} updated successful`, {
-      position: "top-center",
-      autoClose: 1500,
-      pauseOnHover: false,
-      closeOnClick: true,
-      draggable: true,
-    });
+
     navigate("/");
   };
 

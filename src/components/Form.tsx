@@ -72,7 +72,7 @@ const Form = () => {
             />
             <Button
               ref={buttonRef}
-              disabled={!text || text.trim().length < 3}
+              disabled={!text || text.trim().length < 3 || text.startsWith(" ")}
               htmlType="submit"
               type="primary"
               className={`${
